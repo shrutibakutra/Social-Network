@@ -1,4 +1,4 @@
-# Project Network
+# Project Social-Network
 
 
 *A Twitter-like social network website for making posts and following users. This Project is focused in both front-end and back-end. For django API calling, JavaScript has been used.
