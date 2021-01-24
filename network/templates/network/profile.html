@@ -1,0 +1,56 @@
+{% extends "network/layout.html" %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Social Network{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'network/styles.css' %}" rel="stylesheet" type="text/css">
+</head>
+{% block body %}
+
+<div class="card" style="width:80%;height: 200px;margin:0 auto;margin-top: 20px;border-radius: 25px" id="compose-profile">
+    <div class="card-body" style="margin-left: 10%;margin-top: 2%;">
+
+        <h4 class="card-title">{{ userName }}</h4>
+        <div style="float: right;">
+            <p style="text-align: center;">{{ followers }}</p>
+            <p style="font-family: sans-serif;font-weight: 700;"> Following</p>
+        </div>
+        <div style="float: right;margin-right: 10%;">
+            <p style="text-align: center;">{{ following }}</p>
+            <p style="font-family: sans-serif;font-weight: 700;">Followers</p>
+        </div>
+
+        <div style="margin-top: 5%;">
+            {{ follow }} {% if follow %}
+            <a href="{% url 'follow' user_id %}" disabled class="btn btn-success">Follow</a> {% else %}
+            <a href="{% url 'follow' user_id %}" class="btn btn-primary">Follow</a> {% endif %}
+            <a href="{% url 'unfollow' user_id %}" class="btn btn-primary">Unfollow</a>
+        </div>
+    </div>
+</div>
+<div style="width: 80%;
+            margin-left: 10%;
+            margin-top: 5%;
+            display: grid;
+            grid-column-gap: 50px;
+            grid-template-columns: auto auto auto;
+            padding: 10px;">
+    {% for post in posts %}
+
+    <div class="grid-items" style=" background-color: beige;
+                                    border: 1px solid lightgray;
+                                    padding: 30px;
+                                    font-size: 15px;
+                                    ">
+        <p style="text-align: center;">{{ post.text }}</p>
+        <p style="font-size: 8px;color: lightslategray;">{{ post.created_at}}</p>
+
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+</html>

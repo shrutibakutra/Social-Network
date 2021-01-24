@@ -1,0 +1,56 @@
+{% extends "network/layout.html" %} {% load static %} {% block body %}
+<p style="font-size: large;font-weight: 500; margin-left: 20px; font-style: italic;color:lightseagreen;">All Posts</p>
+
+<body>
+
+
+    {% for post in page_obj %}
+    <div class="border" style="width:95%;height:250px;margin-left: 30px;margin-top:30px;background-color:#e9f4f5;border-radius: 25px;">
+        <a href="{% url 'seeProfile' post.user_id %}">
+            <p style="font-size: medium;font-weight: bold;font-family:sans-serif;color:black;margin-left: 20px;margin-top: 20px;">
+                {{ post.user }}</p>
+        </a>
+        {% if request.user == post.user %}
+        <a class="text-primary edit" data-id="{{post.id}}" id="edit-btn-{{post.id}}" style="margin-left: 20px;cursor: pointer;">Edit</a> {% endif %}
+
+        <textarea data-id="{{post.id}}" id="post-edit-{{post.id}}" style="display:none" class="form-control textarea" row="3">{{ post.text }}</textarea>
+
+        <div id="post-box-{{post.id}}">
+            <p id="post-content-{{post.id}}" style="font-size: medium;margin-left: 20px">{{ post.text }}</p>
+            <p style="font-size: medium;margin-left: 20px; color:darkgray;">{{ post.created_at }}</p>
+
+            <div class="like mt-3">
+                <img class="post-like" data-id="{{post.id}}" id="post-like-{{post.id}}" style="height: 25px;width: 25px;margin-left: 20px;" {% if not request.user in post.liked_by.all %} data-is_liked="no" src="https://img.icons8.com/carbon-copy/100/000000/like--v2.png"
+                    {%else%} data-is_liked="yes" src="https://img.icons8.com/plasticine/100/000000/like.png" {%endif%} />
+
+                <span id="post-count-{{post.id}}">{{post.liked_by.count}}</span>
+            </div>
+            <p style="font-size: medium;color: grey;font-family: sans-serif;margin-left: 20px;">comment</p>
+        </div>
+    </div>
+    </div>
+</body>
+
+
+{% endfor %}
+<script src="{% static 'network/script.js' %}">
+</script>
+<div style="justify-content: center;display:flex ;height:5%;width: 100%; background-color:tan;">
+    <div class="pagination">
+        <span class="step-links" style="height: 10%">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first </a> |
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span> {% if page_obj.has_next %}
+
+        <a href="?page={{ page_obj.next_page_number }}">next </a> |
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+        </span>
+    </div>
+</div>
+
+{% endblock %}
